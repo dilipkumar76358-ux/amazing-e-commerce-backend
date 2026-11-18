@@ -5,7 +5,7 @@ from typing import List, Optional, Dict, Any
 import uuid
 from datetime import datetime, timezone
 from app.core.database import get_db
-from app.core.security import get_current_user
+from app.core.security import get_customer_or_guest_user
 from app.schemas.checkout import AddressCreateRequest, AddressResponse
 
 router = APIRouter(tags=["Addresses"])
@@ -37,7 +37,7 @@ _DEFAULT_SAMPLE_ADDRESSES = {
 
 @router.get("/addresses", response_model=List[AddressResponse])
 async def list_addresses(
-    current_user: dict = Depends(get_current_user),
+    current_user: dict = Depends(get_customer_or_guest_user),
     db: Optional[AsyncSession] = Depends(get_db)
 ):
     """
@@ -97,7 +97,7 @@ async def list_addresses(
 @router.post("/addresses", response_model=AddressResponse, status_code=status.HTTP_201_CREATED)
 async def create_address(
     req: AddressCreateRequest,
-    current_user: dict = Depends(get_current_user),
+    current_user: dict = Depends(get_customer_or_guest_user),
     db: Optional[AsyncSession] = Depends(get_db)
 ):
     """
@@ -193,7 +193,7 @@ async def create_address(
 @router.patch("/addresses/{address_id}/default", response_model=AddressResponse)
 async def set_default_address(
     address_id: str,
-    current_user: dict = Depends(get_current_user),
+    current_user: dict = Depends(get_customer_or_guest_user),
     db: Optional[AsyncSession] = Depends(get_db)
 ):
     """
@@ -239,7 +239,7 @@ async def set_default_address(
 @router.delete("/addresses/{address_id}")
 async def delete_address(
     address_id: str,
-    current_user: dict = Depends(get_current_user),
+    current_user: dict = Depends(get_customer_or_guest_user),
     db: Optional[AsyncSession] = Depends(get_db)
 ):
     """

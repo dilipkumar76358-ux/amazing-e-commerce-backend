@@ -3,7 +3,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import text
 from typing import Optional, Dict, Any
 from app.core.database import get_db
-from app.core.security import get_current_user
+from app.core.security import get_customer_or_guest_user
 from app.schemas.checkout import CouponValidateRequest, CouponValidateResponse
 
 router = APIRouter(tags=["Coupons & Discounts"])
@@ -62,7 +62,7 @@ def calculate_coupon_discount(coupon: Dict[str, Any], subtotal: float) -> float:
 @router.post("/coupons/validate", response_model=CouponValidateResponse)
 async def validate_coupon(
     req: CouponValidateRequest,
-    current_user: dict = Depends(get_current_user),
+    current_user: dict = Depends(get_customer_or_guest_user),
     db: Optional[AsyncSession] = Depends(get_db)
 ):
     """
