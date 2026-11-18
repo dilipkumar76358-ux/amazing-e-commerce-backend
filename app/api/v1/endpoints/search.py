@@ -148,9 +148,35 @@ async def search_products(
             if min_rating is not None and rating < min_rating:
                 continue
 
-            # Category filter
+            # Category filter (flexible slug, ID, and alias matching)
             if category:
-                if p.get("category_id") != category and p.get("category_name", "").lower() != category.lower():
+                cat_req = category.lower().strip()
+                cat_prod_name = p.get("category_name", "").lower()
+                cat_prod_id = str(p.get("category_id", "")).lower()
+
+                is_match = (
+                    cat_prod_id == cat_req
+                    or cat_prod_name == cat_req
+                    or cat_req in cat_prod_name
+                    or cat_prod_name in cat_req
+                )
+                if not is_match:
+                    if any(k in cat_req for k in ["laptop", "computer", "pc", "notebook"]):
+                        is_match = (
+                            "laptop" in cat_prod_name
+                            or "computer" in cat_prod_name
+                            or any(k in p.get("name", "").lower() for k in ["laptop", "ultrabook", "notebook", "swiftbook", "keyboard"])
+                        )
+                    elif any(k in cat_req for k in ["audio", "headphone", "earphone"]):
+                        is_match = "audio" in cat_prod_name or "headphone" in cat_prod_name
+                    elif any(k in cat_req for k in ["mobile", "phone"]):
+                        is_match = "mobile" in cat_prod_name or "phone" in cat_prod_name
+                    elif any(k in cat_req for k in ["fashion", "apparel", "shoe"]):
+                        is_match = "fashion" in cat_prod_name or "apparel" in cat_prod_name
+                    elif "electronic" in cat_req:
+                        is_match = True
+
+                if not is_match:
                     continue
 
             # Brand filter

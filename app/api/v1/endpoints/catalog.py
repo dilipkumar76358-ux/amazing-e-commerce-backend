@@ -61,6 +61,16 @@ _MEMORY_CATEGORIES: List[Dict[str, Any]] = [
         "parent_id": None,
         "is_active": True,
     },
+    {
+        "id": "cat-laptops-005",
+        "name": "Computers & Laptops",
+        "slug": "laptops",
+        "description": "Laptops, desktop computers, gaming rigs, and peripherals",
+        "image_url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=600&q=80",
+        "sort_order": 5,
+        "parent_id": "cat-elec-001",
+        "is_active": True,
+    },
 ]
 
 _MEMORY_PRODUCTS: List[Dict[str, Any]] = [
@@ -119,7 +129,7 @@ _MEMORY_PRODUCTS: List[Dict[str, Any]] = [
     {
         "id": "prod-laptop-02",
         "vendor_id": "vend-5555-6666-7777-8888",
-        "category_id": "cat-elec-001",
+        "category_id": "cat-laptops-005",
         "brand_id": None,
         "brand_name": "SwiftBook",
         "name": "Ultrabook Thin & Light 15.6-inch Laptop Core i7 (16GB RAM, 512GB SSD)",
@@ -130,7 +140,7 @@ _MEMORY_PRODUCTS: List[Dict[str, Any]] = [
         "review_count": 512,
         "min_price": 54990.00,
         "primary_image_url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80",
-        "category_name": "Electronics",
+        "category_name": "Computers & Laptops",
         "vendor_store_name": "Apex Electronics Store",
         "variants": [
             {
@@ -153,6 +163,47 @@ _MEMORY_PRODUCTS: List[Dict[str, Any]] = [
                 "storage_path": "products/prod-laptop-02/main.webp",
                 "url": "https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=500&q=80",
                 "alt_text": "Ultrabook Laptop Open View",
+                "sort_order": 0,
+            }
+        ],
+    },
+    {
+        "id": "prod-laptop-03",
+        "vendor_id": "vend-5555-6666-7777-8888",
+        "category_id": "cat-laptops-005",
+        "brand_id": None,
+        "brand_name": "SwiftBook",
+        "name": "SwiftBook Ultra 14 Thin & Light Laptop (Core i5, 16GB RAM, 512GB SSD)",
+        "slug": "swiftbook-ultra-14-thin-light-laptop",
+        "description": "Ultra-portable 14-inch laptop with 2.8K OLED display, 16GB RAM, 512GB SSD, and 14-hour battery life.",
+        "product_status": "active",
+        "average_rating": 4.6,
+        "review_count": 142,
+        "min_price": 46990.00,
+        "primary_image_url": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80",
+        "category_name": "Computers & Laptops",
+        "vendor_store_name": "Apex Electronics Store",
+        "variants": [
+            {
+                "id": "var-lap-swift-14",
+                "product_id": "prod-laptop-03",
+                "sku": "SWIFT-14-I5",
+                "variant_attributes": {"ram": "16GB", "storage": "512GB SSD"},
+                "selling_price": 46990.00,
+                "compare_at_price": 62990.00,
+                "weight_grams": 1350,
+                "available_stock": 28,
+                "is_active": True,
+            }
+        ],
+        "images": [
+            {
+                "id": "img-lap-swift-1",
+                "product_id": "prod-laptop-03",
+                "variant_id": "var-lap-swift-14",
+                "storage_path": "products/prod-laptop-03/main.webp",
+                "url": "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=500&q=80",
+                "alt_text": "SwiftBook 14 Laptop Display",
                 "sort_order": 0,
             }
         ],
