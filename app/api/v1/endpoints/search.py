@@ -88,6 +88,7 @@ async def search_products(
     # 2. In-memory fallback / bootstrap search algorithm
     if not matched_items:
         clean_q = q.lower().strip() if q else ""
+        stopwords = {"a", "an", "the", "and", "or", "in", "on", "at", "to", "for", "with", "by", "of", "from", "is", "it"}
         for p in _MEMORY_PRODUCTS:
             if p.get("product_status") != "active":
                 continue
@@ -109,11 +110,29 @@ async def search_products(
                 if clean_q in desc_lower:
                     relevance_score += 3
 
-                # Skip if no match
+                # Check token overlap if full phrase didn't match
                 if relevance_score == 0:
-                    # Check token overlap
-                    tokens = clean_q.split()
-                    if not any(t in name_lower or t in desc_lower for t in tokens):
+                    raw_tokens = clean_q.split()
+                    filtered_tokens = [t for t in raw_tokens if t not in stopwords]
+                    tokens_to_check = filtered_tokens if filtered_tokens else raw_tokens
+
+                    token_matched = False
+                    for t in tokens_to_check:
+                        t_stem = t[:-1] if (len(t) > 3 and t.endswith("s")) else (t[:-2] if (len(t) > 4 and t.endswith("es")) else t)
+                        if t in name_lower or (len(t_stem) > 2 and t_stem in name_lower):
+                            relevance_score += 5
+                            token_matched = True
+                        elif t in brand_lower or (len(t_stem) > 2 and t_stem in brand_lower):
+                            relevance_score += 4
+                            token_matched = True
+                        elif t in cat_lower or (len(t_stem) > 2 and t_stem in cat_lower):
+                            relevance_score += 3
+                            token_matched = True
+                        elif t in desc_lower or (len(t_stem) > 2 and t_stem in desc_lower):
+                            relevance_score += 1
+                            token_matched = True
+
+                    if not token_matched:
                         continue
 
             price = p.get("min_price") or 0.0
